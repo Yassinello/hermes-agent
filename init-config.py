@@ -1,7 +1,6 @@
-import os, pathlib
+import pathlib
 p = pathlib.Path('/opt/data/config.yaml')
-if not p.exists():
-    p.write_text("""model:
+p.write_text("""model:
   provider: openrouter
   default: google/gemini-2.5-flash-preview
 memory:
@@ -30,11 +29,13 @@ mcp_servers:
     env:
       APIFY_TOKEN: "${APIFY_TOKEN}"
 """)
-    print("Config created")
-else:
-    print("Config exists, skipping")
+print("Config written")
 ```
 
-Puis le **Custom Start Command** devient simplement :
+Ça écrase **uniquement** `/opt/data/config.yaml`. Les dossiers `memories/`, `skills/`, `sessions/` ne sont pas touchés.
+
+Une fois que le bot fonctionne avec Gemini Flash, tu remettras la version `if not p.exists()` pour qu'Hermes puisse modifier sa propre config.
+
+**Custom Start Command** :
 ```
-bash -c "python3 init-config.py && /opt/hermes/docker/entrypoint.sh gateway"
+bash -c "python3 /opt/hermes/init-config.py && /opt/hermes/docker/entrypoint.sh gateway"
