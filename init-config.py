@@ -4,7 +4,7 @@ import pathlib, os
 p = pathlib.Path('/opt/data/config.yaml')
 p.write_text("""model:
   provider: openrouter
-  default: google/gemini-2.5-flash-preview
+  default: google/gemini-2.5-flash
 memory:
   memory_enabled: true
   user_profile_enabled: true
