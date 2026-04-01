@@ -1,4 +1,6 @@
-import pathlib
+import pathlib, os
+
+# 1. Write config.yaml
 p = pathlib.Path('/opt/data/config.yaml')
 p.write_text("""model:
   provider: openrouter
@@ -29,4 +31,14 @@ mcp_servers:
     env:
       APIFY_TOKEN: "${APIFY_TOKEN}"
 """)
-print("Config written")
+
+# 2. Dump ALL env vars to .env so Hermes can read them
+e = pathlib.Path('/opt/data/.env')
+lines = []
+for k, v in os.environ.items():
+    if k.startswith('_') or k in ('PATH', 'HOME', 'PWD', 'SHLVL', 'HOSTNAME'):
+        continue
+    lines.append(f'{k}={v}')
+e.write_text('\n'.join(sorted(lines)) + '\n')
+
+print(f"Config written + {len(lines)} env vars dumped to .env")
