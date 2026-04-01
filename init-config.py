@@ -30,12 +30,3 @@ mcp_servers:
       APIFY_TOKEN: "${APIFY_TOKEN}"
 """)
 print("Config written")
-```
-
-Ça écrase **uniquement** `/opt/data/config.yaml`. Les dossiers `memories/`, `skills/`, `sessions/` ne sont pas touchés.
-
-Une fois que le bot fonctionne avec Gemini Flash, tu remettras la version `if not p.exists()` pour qu'Hermes puisse modifier sa propre config.
-
-**Custom Start Command** :
-```
-bash -c "python3 /opt/hermes/init-config.py && /opt/hermes/docker/entrypoint.sh gateway"
