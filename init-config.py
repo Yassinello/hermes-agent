@@ -1,8 +1,8 @@
 import pathlib, os
 
-# 1. Write config.yaml
 p = pathlib.Path('/opt/data/config.yaml')
-p.write_text("""model:
+if not p.exists():
+    p.write_text("""model:
   provider: openrouter
   default: google/gemini-2.5-flash
 memory:
@@ -30,9 +30,14 @@ mcp_servers:
     args: ["-y", "@apify/actors-mcp-server", "--actors", "docs,supreme_coder/linkedin-post,harvestapi/linkedin-profile-scraper,harvestapi/linkedin-company,bestscrapers/linkedin-company-insights-scraper,harvestapi/linkedin-profile-posts,harvestapi/linkedin-company-posts"]
     env:
       APIFY_TOKEN: "${APIFY_TOKEN}"
+  yass-mcp:
+    url: "https://mcp-yass.vercel.app/api/mcp?token=yass_mcp_prod_2026"
 """)
+    print("Config created (first run)")
+else:
+    print("Config exists, skipping")
 
-# 2. Dump ALL env vars to .env so Hermes can read them
+# Always dump env vars to .env
 e = pathlib.Path('/opt/data/.env')
 lines = []
 for k, v in os.environ.items():
@@ -40,5 +45,4 @@ for k, v in os.environ.items():
         continue
     lines.append(f'{k}={v}')
 e.write_text('\n'.join(sorted(lines)) + '\n')
-
-print(f"Config written + {len(lines)} env vars dumped to .env")
+print(f"{len(lines)} env vars dumped to .env")
