@@ -32,7 +32,10 @@ mcp_servers:
   yass-mcp:
     url: "https://mcp-yass.vercel.app/api/mcp?token=${YASS_MCP_TOKEN}"
   composio:
-    url: "https://connect.composio.dev/mcp?x-consumer-api-key=${COMPOSIO_API_KEY}"
+    command: npx
+    args: ["-y", "composio-core", "mcp"]
+    env:
+      COMPOSIO_API_KEY: "${COMPOSIO_API_KEY}"
 """)
 os.chmod(str(p), stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
 
