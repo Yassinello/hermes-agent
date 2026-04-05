@@ -3,7 +3,7 @@ import pathlib, os, stat
 p = pathlib.Path('/opt/data/config.yaml')
 p.write_text("""model:
   provider: openrouter
-  default: google/gemini-2.5-flash
+  default: qwen/qwen3.6-plus:free
 memory:
   memory_enabled: true
   user_profile_enabled: true
@@ -33,7 +33,7 @@ mcp_servers:
     url: "https://mcp-yass.vercel.app/api/mcp?token=${YASS_MCP_TOKEN}"
   composio:
     command: npx
-    args: ["-y", "composio-core", "mcp"]
+    args: ["-y", "@composio/mcp", "start"]
     env:
       COMPOSIO_API_KEY: "${COMPOSIO_API_KEY}"
 """)
