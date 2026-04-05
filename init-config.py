@@ -20,6 +20,11 @@ display:
   tool_progress: off
 TELEGRAM_HOME_CHANNEL: '6461243820'
 mcp_servers:
+  composio:
+    url: "https://connect.composio.dev/mcp"
+    config:
+      headers:
+        x-consumer-api-key: "${COMPOSIO_API_KEY}"  
   github:
     command: npx
     args: ["-y", "@modelcontextprotocol/server-github"]
