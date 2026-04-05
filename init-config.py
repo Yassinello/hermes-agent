@@ -32,11 +32,10 @@ mcp_servers:
   yass-mcp:
     url: "https://mcp-yass.vercel.app/api/mcp?token=${YASS_MCP_TOKEN}"
   composio:
-    url: "https://mcp.composio.dev/sse?api_key=${COMPOSIO_API_KEY}"
+    url: "https://connect.composio.dev/mcp?x-consumer-api-key=${COMPOSIO_API_KEY}"
 """)
-os.chmod(str(p), stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)  # read-only
+os.chmod(str(p), stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
 
-# Dump env vars to .env
 e = pathlib.Path('/opt/data/.env')
 lines = []
 for k, v in os.environ.items():
