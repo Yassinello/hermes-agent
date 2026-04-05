@@ -1,8 +1,7 @@
-import pathlib, os
+import pathlib, os, stat
 
 p = pathlib.Path('/opt/data/config.yaml')
-if not p.exists():
-    p.write_text("""model:
+p.write_text("""model:
   provider: openrouter
   default: google/gemini-2.5-flash
 memory:
@@ -20,11 +19,6 @@ display:
   tool_progress: off
 TELEGRAM_HOME_CHANNEL: '6461243820'
 mcp_servers:
-  composio:
-    url: "https://connect.composio.dev/mcp"
-    config:
-      headers:
-        x-consumer-api-key: "${COMPOSIO_API_KEY}"  
   github:
     command: npx
     args: ["-y", "@modelcontextprotocol/server-github"]
@@ -36,13 +30,13 @@ mcp_servers:
     env:
       APIFY_TOKEN: "${APIFY_TOKEN}"
   yass-mcp:
-    url: "https://mcp-yass.vercel.app/api/mcp?token=yass_mcp_prod_2026"
+    url: "https://mcp-yass.vercel.app/api/mcp?token=${YASS_MCP_TOKEN}"
+  composio:
+    url: "https://mcp.composio.dev/sse?api_key=${COMPOSIO_API_KEY}"
 """)
-    print("Config created (first run)")
-else:
-    print("Config exists, skipping")
+os.chmod(str(p), stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)  # read-only
 
-# Always dump env vars to .env
+# Dump env vars to .env
 e = pathlib.Path('/opt/data/.env')
 lines = []
 for k, v in os.environ.items():
@@ -50,4 +44,5 @@ for k, v in os.environ.items():
         continue
     lines.append(f'{k}={v}')
 e.write_text('\n'.join(sorted(lines)) + '\n')
-print(f"{len(lines)} env vars dumped to .env")
+
+print(f"Config written (read-only) + {len(lines)} env vars dumped")
