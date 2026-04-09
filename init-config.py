@@ -3,7 +3,7 @@ import pathlib, os, stat
 p = pathlib.Path('/opt/data/config.yaml')
 p.write_text("""model:
   provider: openrouter
-  default: qwen/qwen3.6-plus:free
+  default: qwen/qwen3.6-plus
 memory:
   memory_enabled: true
   user_profile_enabled: true
